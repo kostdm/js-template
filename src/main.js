@@ -1,12 +1,23 @@
+import '@babel/polyfill';
 import * as ArticlesModel from './articles';
 
-ArticlesModel.all()
-    .then(articles => {
+(async function() {
+    try {
+        let articles = await ArticlesModel.all();
         console.log('articles count = ' + articles.length);
-    })
-    .catch(error => {
-        console.log(error + ' in articles list');
-    });
+
+        // берём случайный индекс
+        let ind = Math.floor(Math.random() * articles.length);
+        console.log('select index ' + ind + ', id = ' + articles[ind].id)
+        
+        // получаем статью по id
+        let one = await ArticlesModel.one(articles[ind].id);
+        console.log(one)
+    }
+    catch (error) {
+        console.log(error);
+    }
+})();
 
 // ArticlesModel.all((articles) => {
 //     console.log('articles count = ' + articles.length);

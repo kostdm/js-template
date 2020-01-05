@@ -2,22 +2,20 @@
  * Глобальная вероятность успеха для удобства тестирования
  */
 const GLOBAL_PROPABILITY = 0.8;
-const BAD_JSON_PROPABILITY = 0.8;
+const BAD_JSON_PROPABILITY = 0;
 
 /**
  * Получить все записи из хранилища
  * @param {callable} onAnswer Функция, обрабатывающая ответ от сервера в формате JSON 
  */
-export function all(){
-    return new Promise((resolve, reject) => {
-        TimeoutPropabiliry(300, GLOBAL_PROPABILITY)
-            .then( () => {
-                resolve(serverAnswer(articlesStorage));
-            })
-            .catch( () => {
-                resolve(serverAnswer('', 100500, "Propability Error"));
-            });
-    });
+export async function all(){
+    try {
+        await TimeoutPropabiliry(300, GLOBAL_PROPABILITY);
+        return serverAnswer(articlesStorage);
+    }
+    catch(error) {
+        return error;
+    }
 }
 
 /**
@@ -25,12 +23,14 @@ export function all(){
  * @param {int} id Id статьи
  * @param {callable} onAnswer Функция, обрабатывающая ответ от сервера в формате JSON 
  */
-export function get(id, onAnswer){
-    TimeoutPropabiliry(300, GLOBAL_PROPABILITY, () => {
-        onAnswer(serverAnswer(articlesStorage[mapArticles[id]]));
-    }, () => {
-        onAnswer(serverAnswer('', 100500, "Propability Error"));
-    });
+export async function get(id){
+    try {
+        await TimeoutPropabiliry(300, GLOBAL_PROPABILITY);
+        return serverAnswer(articlesStorage[mapArticles[id]]);
+    }
+    catch(error) {
+        return error;
+    }
 }
 
 /**
@@ -38,27 +38,44 @@ export function get(id, onAnswer){
  * @param {int} id Id статьи
  * @param {callable} onAnswer Функция, обрабатывающая ответ от сервера в формате JSON  
  */
-export function remove(id, onAnswer){
-    TimeoutPropabiliry(300, GLOBAL_PROPABILITY, () => {
-        if(id in mapArticles){
+// export function remove(id, onAnswer){
+//     TimeoutPropabiliry(300, GLOBAL_PROPABILITY, () => {
+//         if(id in mapArticles){
+//             let num = mapArticles[id];
+//             delete mapArticles[id];
+//             articlesStorage.splice(num, 1);
+//             onAnswer(serverAnswer(true));
+//         }
+//         else{
+//             onAnswer(false);
+//         }
+//     }, () => {
+//         onAnswer(serverAnswer('', 100500, "Propability Error"));
+//     });
+// }
+export async function remove(id){
+    try {
+        await TimeoutPropabiliry(300, GLOBAL_PROPABILITY);
+        if (id in mapArticles) {
             let num = mapArticles[id];
             delete mapArticles[id];
             articlesStorage.splice(num, 1);
-            onAnswer(serverAnswer(true));
+            return serverAnswer(true);
         }
         else{
-            onAnswer(false);
+            return false;
         }
-    }, () => {
-        onAnswer(serverAnswer('', 100500, "Propability Error"));
-    });
+    }
+    catch(error) {
+        return error;
+    }
 }
 
 /* полуприватная часть, вдруг захотите сделать промис :) */
 function TimeoutPropabiliry(time, probability){
     return new Promise((resolve, reject) => {
         window.setTimeout(() => {
-            Math.random() < probability ? resolve() : reject();
+            Math.random() < probability ? resolve() : reject(serverAnswer('', 100500, "Propability Error"));
         }, time);
     });
 }
