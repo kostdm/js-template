@@ -10,12 +10,8 @@ function checkData(response, place) {
         throw (`Bad JSON${place}: ${response}`);
     }
     
-    if (info.code === 200) {
-        return info.data;
-    }
-    else {
-        throw info.status + place;
-    }
+    if (info.code === 200) return info.data;
+    throw info.status + place;
 }
 
 async function all(){
