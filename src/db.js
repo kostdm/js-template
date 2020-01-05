@@ -1,8 +1,8 @@
 /**
  * Глобальная вероятность успеха для удобства тестирования
  */
-const GLOBAL_PROPABILITY = 0.8;
-const BAD_JSON_PROPABILITY = 0.8;
+const GLOBAL_PROPABILITY = 0.9;
+const BAD_JSON_PROPABILITY = 0.2;
 
 /**
  * Получить все записи из хранилища
