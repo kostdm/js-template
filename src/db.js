@@ -2,7 +2,7 @@
  * Глобальная вероятность успеха для удобства тестирования
  */
 const GLOBAL_PROPABILITY = 0.8;
-const BAD_JSON_PROPABILITY = 0;
+const BAD_JSON_PROPABILITY = 0.8;
 
 /**
  * Получить все записи из хранилища
@@ -38,21 +38,6 @@ export async function get(id){
  * @param {int} id Id статьи
  * @param {callable} onAnswer Функция, обрабатывающая ответ от сервера в формате JSON  
  */
-// export function remove(id, onAnswer){
-//     TimeoutPropabiliry(300, GLOBAL_PROPABILITY, () => {
-//         if(id in mapArticles){
-//             let num = mapArticles[id];
-//             delete mapArticles[id];
-//             articlesStorage.splice(num, 1);
-//             onAnswer(serverAnswer(true));
-//         }
-//         else{
-//             onAnswer(false);
-//         }
-//     }, () => {
-//         onAnswer(serverAnswer('', 100500, "Propability Error"));
-//     });
-// }
 export async function remove(id){
     try {
         await TimeoutPropabiliry(300, GLOBAL_PROPABILITY);

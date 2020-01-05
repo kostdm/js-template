@@ -34,18 +34,6 @@ async function one(id){
     }
 }
 
-// function remove(id, onSuccess, onError){
-//     serverApi.remove(id, (response) => {
-//         let info = JSON.parse(response);
-
-//         if(info.code === 200){
-//             onSuccess(info.data);
-//         }
-//         else{
-//             onError(info.status);
-//         }
-//     });
-// }
 async function remove(id){
     let response = await serverApi.remove(id);
     try {
