@@ -1,18 +1,22 @@
 /**
  * Глобальная вероятность успеха для удобства тестирования
  */
-const GLOBAL_PROPABILITY = 1;
-const BAD_JSON_PROPABILITY = 0;
+const GLOBAL_PROPABILITY = 0.8;
+const BAD_JSON_PROPABILITY = 0.8;
 
 /**
  * Получить все записи из хранилища
  * @param {callable} onAnswer Функция, обрабатывающая ответ от сервера в формате JSON 
  */
-export function all(onAnswer){
-    TimeoutPropabiliry(300, GLOBAL_PROPABILITY, () => {
-        onAnswer(serverAnswer(articlesStorage));
-    }, () => {
-        onAnswer(serverAnswer('', 100500, "Propability Error"));
+export function all(){
+    return new Promise((resolve, reject) => {
+        TimeoutPropabiliry(300, GLOBAL_PROPABILITY)
+            .then( () => {
+                resolve(serverAnswer(articlesStorage));
+            })
+            .catch( () => {
+                resolve(serverAnswer('', 100500, "Propability Error"));
+            });
     });
 }
 
@@ -51,10 +55,12 @@ export function remove(id, onAnswer){
 }
 
 /* полуприватная часть, вдруг захотите сделать промис :) */
-function TimeoutPropabiliry(time, probability, onSuccess, onError){
-    window.setTimeout(() => {
-        Math.random() < probability ? onSuccess() : onError();
-    }, time);
+function TimeoutPropabiliry(time, probability){
+    return new Promise((resolve, reject) => {
+        window.setTimeout(() => {
+            Math.random() < probability ? resolve() : reject();
+        }, time);
+    });
 }
 
 function serverAnswer(data, code = 200, status = "OK"){
