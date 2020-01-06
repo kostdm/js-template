@@ -24,3 +24,28 @@ export class Parody {
         return node;
     }
 }
+
+export function ParodyDom(tag, props, ...children) {
+    console.log(tag);
+    console.log(props);
+    console.log(children);
+
+    if (typeof tag === "function") {
+        return (new tag(props)).render();
+    }
+
+    let node = document.createElement(tag);
+
+    children.forEach(child => {
+        if (child instanceof HTMLElement){
+            node.appendChild(child);
+        } else {
+            let textNode = document.createTextNode(child);
+            node.appendChild(textNode);
+        }
+    });
+
+    Object.assign(node, props);
+
+    return node;
+}

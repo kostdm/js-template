@@ -1,4 +1,4 @@
-import {Parody} from '../parody';
+import {Parody, ParodyDom} from '../parody';
 
 export default class InputNumber extends Parody {
     constructor(props) {
@@ -19,33 +19,21 @@ export default class InputNumber extends Parody {
     }
 
     render() {
-        let min = document.createElement('input');
-        min.setAttribute('type', 'button');
-        min.value = '-';
-        min.addEventListener('click', () => {
-            this._normalizeValue(this.props.value - 1);
-        });
-
-        let plus = document.createElement('input');
-        plus.setAttribute('type', 'button');
-        plus.value = '+';
-        plus.addEventListener('click', (e) => {
-            this._normalizeValue(this.props.value + 1);
-        });
-
-        let num = document.createElement('input');
-        num.className = 'inputNumber__value';
-        num.setAttribute('type', 'text');
-        num.value = this.props.value;
-        num.addEventListener('change', (e) => {
-            this._normalizeValue(e.target.value);
-        });
-
-        let root = document.createElement('div');
-        root.appendChild(min);
-        root.appendChild(num);
-        root.appendChild(plus);
-
-        return super.render(root);
+        return super.render(
+            <div className="">
+                <input type="button" value="-" className="inputNumber__min"
+                       onclick={() => {
+                           this._normalizeValue(this.props.value - 1);
+                       }} />
+                <input type="text" value={this.props.value} className="inputNumber__value"
+                       onclick={(e) => {
+                           this._normalizeValue(e.target.value);
+                       }} />
+                <input type="button" value="+" className="inputNumber__plus"
+                       onclick={() => {
+                           this._normalizeValue(this.props.value + 1);
+                       }} />
+            </div>
+        );
     }
 }
