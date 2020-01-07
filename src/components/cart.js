@@ -5,36 +5,52 @@ export default class Cart extends Parody {
     constructor(props) {
         super(props);
 
-        this.state = {
+        this.InitialState({
             products: [
                 {price: 1000, rest: 10, current: 1},
-                {price: 2000, rest: 5, current: 2}
+                {price: 2000, rest: 5, current: 2},
+                {price: 5000, rest: 25, current: 5}
             ]
-        };
+        });
     }
 
     onChange(ind, val) {
         this.state.products[ind].current = val;
-        this.render();
+    }
+
+    onAdd = () => {
+        this.state.products.push({
+            price: 500,
+            rest: 7,
+            current: 3
+        });
+    }
+
+    onRemove(ind) {
+        this.state.products.splice(ind, 1);
     }
 
     render() {
         let sum = this.state.products
             .reduce((total, item) => total + item.price * item.current, 0);
 
-        let prod = this.state.products;
+        let inputs = this.state.products.map((item, i) => {
+            return (
+            <div>
+                <InputNumber min="1" max={item.rest} value={item.current}
+                             change={this.onChange.bind(this, i)}
+                />
+                <input type="button" value="X" className="inputNumber__delete"
+                       onclick={this.onRemove.bind(this, i)} />
+            </div>); 
+        });
 
         return super.render(
             <div>
-                <InputNumber min="1"
-                             max={prod[0].rest}
-                             value={prod[0].current}
-                             change={this.onChange.bind(this, 0)}
-                />
-                <InputNumber min="1"
-                             max={prod[1].rest}
-                             value={prod[1].current}
-                             change={this.onChange.bind(this, 1)}
+                {inputs}
+                <hr/>
+                <input type="button" value="add"
+                       onclick={this.onAdd.bind(this)}
                 />
                 <hr/>
                 <div>{sum}</div>

@@ -1,3 +1,37 @@
+function watchObj(target, callback) {
+    let reactiveFunctions = {
+        push: true,
+        pop: true,
+        splice: true,
+        slice: true,
+        shift: true,
+        unshift: true,
+        sort: true
+    };
+
+    return new Proxy(target, {
+        get(targ, prop) {
+            if (typeof targ[prop] === "function"){
+                if (prop in reactiveFunctions) {
+                    return function(...args) {
+                        let res = targ[prop].apply(target, args);
+                        callback();
+                        return res;
+                    };
+                } else {
+                    return targ[prop].bind(targ);
+                }
+            }
+            return watchObj(targ[prop], callback);
+        },
+        set(targ, prop, val) {
+            targ[prop] = val;
+            callback();
+            return true;
+        }
+    });
+}
+
 export class Parody {
     constructor(props) {
         if (typeof props !== "object") {
@@ -7,6 +41,10 @@ export class Parody {
         this.props = props;
         this.isMount = false;
         this.targetNode;
+    }
+
+    InitialState(state){
+        this.state = watchObj(state, this.render.bind(this));
     }
 
     bindMount(selector) {
@@ -36,14 +74,22 @@ export function ParodyDom(tag, props, ...children) {
 
     let node = document.createElement(tag);
 
-    children.forEach(child => {
+    function addChildren(child){
         if (child instanceof HTMLElement){
             node.appendChild(child);
-        } else {
+        }
+        else if (typeof child === "object") {
+            for (let elem of child) {
+                addChildren(elem);
+            }    
+        } 
+        else {
             let textNode = document.createTextNode(child);
             node.appendChild(textNode);
         }
-    });
+    }
+
+    children.forEach(addChildren);
 
     Object.assign(node, props);
 
