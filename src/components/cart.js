@@ -40,25 +40,5 @@ export default class Cart extends Parody {
                 <div>{sum}</div>
             </div>
         );
-
-        let div = document.createElement('div');
-        
-        this.state.products.forEach( (item, i) => {
-            let inp = (new InputNumber({
-                min: 1,
-                max: item.rest,
-                value: item.current,
-                change: this.onChange.bind(this, i)
-            })).render();
-
-            div.appendChild(inp);
-        });
-
-        let summary = document.createElement('div');
-        summary.innerHTML = this.state.products
-            .reduce((total, item) => total + item.price * item.current, 0); 
-        div.appendChild(summary);
-
-        return super.render(div);
     }
 }
