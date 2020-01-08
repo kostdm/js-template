@@ -62,7 +62,13 @@ export class Parody {
         return node;
     }
 }
-
+/* <div>
+            <InputNumber min="1" max={item.rest} value={item.current}
+                             change={this.onChange.bind(this, i)}
+                />
+                <input type="button" value="X" className="inputNumber__delete"
+                       onclick={this.onRemove.bind(this, i)} />
+            </div> */
 export function ParodyDom(tag, props, ...children) {
     console.log(tag);
     console.log(props);

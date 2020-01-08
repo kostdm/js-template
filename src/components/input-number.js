@@ -26,7 +26,7 @@ export default class InputNumber extends Parody {
                            this._normalizeValue(this.props.value - 1);
                        }} />
                 <input type="text" value={this.props.value} className="inputNumber__value"
-                       onclick={(e) => {
+                       onchange={(e) => {
                            this._normalizeValue(e.target.value);
                        }} />
                 <input type="button" value="+" className="inputNumber__plus"
