@@ -1,15 +1,44 @@
-class Test {
-    constructor(name = 'Vasya') {
-        this.name = name;
+import '@babel/polyfill';
+
+async function reqData(url, method, bodyData = {}){
+    try {
+        let data = await fetch(url, {
+            method,
+            body: JSON.stringify(bodyData)
+        }).then(response => {
+            return response.json();
+        });
+        return data;
+    }
+    catch {
+        throw ('Не удалось получить данные');
     }
 }
 
-let txt = new Test();
-console.log(txt.name);
+(async function(){
+    try {
+        // получаем данные
+        // let data = await reqData('http://localhost:8080/clients', 'get');
+        // console.log(data);
 
-for (let value of ['1','2','3','4','5']) {
-    console.log(value);
-}
+        // добавляем данные
+        let add = await reqData('http://localhost:8080/clients', 'post', {
+            name: 'Добавлялов Юрий Юрьевич',
+            phone: '+7 901 121 12-12',
+            mail: 'test@test.com',
+            admin: true
+        });
+        console.log(add);
 
-const doc = document.querySelector('body');
-doc.style.backgroundColor = "red";
+        // берем случайный эллемент
+        let rnd = Math.floor(Math.random() * data.length);
+        console.log(`random is: ${rnd}, _id is: ${data[rnd]._id}`);
+
+        // получаем данные по id
+        let one = await reqData(`http://localhost:8080/clients/${data[rnd]._id}`, 'get');
+        console.log(one);
+    }
+    catch(err) {
+        console.log('Error : ' + err);
+    }
+})();
