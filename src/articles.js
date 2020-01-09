@@ -1,32 +1,11 @@
-import * as serverApi from './db';
+export async function all(){
 
-function checkData(response, place) {
-    let info;
-    
-    try {
-        info = JSON.parse(response);
-    }
-    catch {
-        throw (`Bad JSON${place}: ${response}`);
-    }
-    
-    if (info.code === 200) return info.data;
-    throw info.status + place;
 }
 
-async function all(){
-    let response = await serverApi.all();
-    return checkData(response,' in articles list');
+export async function one(id){
+
 }
 
-async function one(id){
-    let response = await serverApi.get(id);
-    return checkData(response,' in articles one');
-}
+export async function remove(id){
 
-async function remove(id){
-    let response = await serverApi.remove(id);
-    return checkData(response,' in articles delete');
 }
-
-export {all, one, remove};
