@@ -1,32 +1,13 @@
-import * as serverApi from './db';
-
-function checkData(response, place) {
-    let info;
-    
-    try {
-        info = JSON.parse(response);
-    }
-    catch {
-        throw (`Bad JSON${place}: ${response}`);
-    }
-    
-    if (info.code === 200) return info.data;
-    throw info.status + place;
-}
+import api from './api';
 
 async function all(){
-    let response = await serverApi.all();
-    return checkData(response,' in articles list');
+    try {
+        const response = await api.get('articles');
+        return response;
+    }
+    catch (error) {
+        throw error;
+    }
 }
 
-async function one(id){
-    let response = await serverApi.get(id);
-    return checkData(response,' in articles one');
-}
-
-async function remove(id){
-    let response = await serverApi.remove(id);
-    return checkData(response,' in articles delete');
-}
-
-export {all, one, remove};
+export {all};
