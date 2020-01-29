@@ -1,6 +1,6 @@
-import {Parody, ParodyDom} from '../parody';
+import React from 'react';
 
-export default class InputNumber extends Parody {
+export default class InputNumber extends React.Component{
     constructor(props) {
         super(props);
 
@@ -19,18 +19,18 @@ export default class InputNumber extends Parody {
     }
 
     render() {
-        return super.render(
+        return (
             <div className="">
                 <input type="button" value="-" className="inputNumber__min"
-                       onclick={() => {
+                       onClick={() => {
                            this._normalizeValue(this.props.value - 1);
                        }} />
                 <input type="text" value={this.props.value} className="inputNumber__value"
-                       onchange={(e) => {
+                       onChange={(e) => {
                            this._normalizeValue(e.target.value);
                        }} />
                 <input type="button" value="+" className="inputNumber__plus"
-                       onclick={() => {
+                       onClick={() => {
                            this._normalizeValue(this.props.value + 1);
                        }} />
             </div>

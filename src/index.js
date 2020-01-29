@@ -1,3 +1,5 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
 import Cart from './components/cart';
 
-(new Cart()).bindMount('.sample').render();
+ReactDOM.render(<Cart/>, document.querySelector('.app'));
