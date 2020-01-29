@@ -6,22 +6,29 @@ import ArticleCard from './arcticle-card';
 import LoginBox from './login-box';
 import Button from '@material-ui/core/Button';
 
+const data = {
+    _id: '45345345',
+    title: 'Title',
+    author: 'Author',
+    content: 'Content',
+}
+
 const AuthedUser = () => {
     return (
         <Container fixed>
             <Button variant="contained" color="primary">Add</Button>
             <Grid container spacing={3}>
                 <Grid item xs={3}>
-                    <ArticleCard/>
+                    <ArticleCard data={data}/>
                 </Grid>
                 <Grid item xs={3}>
-                    <ArticleCard/>
+                    <ArticleCard data={data}/>
                 </Grid>
                 <Grid item xs={3}>
-                    <ArticleCard/>
+                    <ArticleCard data={data}/>
                 </Grid>
                 <Grid item xs={3}>
-                    <ArticleCard/>
+                    <ArticleCard data={data}/>
                 </Grid>
             </Grid>
         </Container>

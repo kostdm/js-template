@@ -23,20 +23,20 @@ const useStyles = makeStyles({
   },
 });
 
-export default function SimpleCard() {
+export default function SimpleCard(data) {
   const classes = useStyles();
 
   return (
     <Card className={classes.card}>
       <CardContent>
         <Typography className={classes.title} color="textSecondary" gutterBottom>
-          Author: author
+          {data.author}
         </Typography>
         <Typography variant="h5" component="h2">
-          Title
+          {data.title}
         </Typography>
         <Typography variant="body2" component="p">
-          <p>Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне. Lorem Ipsum является стандартной "рыбой" для текстов на латинице с начала XVI века. В то время некий безымянный печатник создал большую коллекцию размеров и форм шрифтов, используя Lorem Ipsum для распечатки образцов.</p>
+          {data.content}
         </Typography>
       </CardContent>
       <CardActions>
