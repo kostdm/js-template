@@ -1,57 +1,56 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import ArticleCard from './arcticle-card';
-import LoginBox from './login-box';
 import Button from '@material-ui/core/Button';
+import AddIcon from '@material-ui/icons/Add';
+import AddModal from './add-modal';
 
-const data = {
-    _id: '45345345',
-    title: 'Title',
-    author: 'Author',
-    content: 'Content',
-}
-
-const AuthedUser = () => {
-    return (
-        <Container fixed>
-            <Button variant="contained" color="primary">Add</Button>
-            <Grid container spacing={3}>
-                <Grid item xs={3}>
-                    <ArticleCard data={data}/>
-                </Grid>
-                <Grid item xs={3}>
-                    <ArticleCard data={data}/>
-                </Grid>
-                <Grid item xs={3}>
-                    <ArticleCard data={data}/>
-                </Grid>
-                <Grid item xs={3}>
-                    <ArticleCard data={data}/>
-                </Grid>
-            </Grid>
-        </Container>
-    );
-}
-
-const LoginUser = () => {
-    return (
-        <Container fixed>
-            <Grid container direction="row" justify="center" alignItems="center">
-                <Grid item xs={3}>
-                    <LoginBox/>
-                </Grid>
-            </Grid>
-        </Container>
-    );
-}
+import api from './api';
 
 export default function FixedContainer() {
+    const [articles, setArticles] = useState([]);
+    const [addShow, setAddShow] = useState(false);
+    
+    useEffect(() => {
+        async function getData(){
+            let response = await api.get('articles');
+            setArticles(response.data.articles);
+        }
+        
+        getData();
+    }, [articles]);
+
+    function ShowAdd(){
+        setAddShow(true);
+    }
+    function CloseAdd(){
+        setAddShow(false);
+    }
+
     return (
         <div>
-            <AuthedUser/>
-            {/* <LoginUser/> */}
+            <Container fixed>
+                <Grid container spacing={3}>
+                    <Grid item xs={6}>
+                    <Button variant="contained"
+                            color="primary"
+                            startIcon={<AddIcon />}
+                            onClick={ShowAdd}>
+                        Add new
+                    </Button>
+                    </Grid>
+                </Grid>
+                <Grid container spacing={3}>
+                {articles.map(item => (
+                    <Grid item xs={3} key={item._id}>
+                        <ArticleCard data={item}/>
+                    </Grid>
+                ))}
+                </Grid>
+            </Container>
+            <AddModal show={addShow} close={CloseAdd}/>
         </div>
     );
   }

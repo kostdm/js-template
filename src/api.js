@@ -4,7 +4,8 @@ const token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlMmQ0MjMyN
 
 const api = axios.create({
     baseURL: 'http://localhost:3000/',
-    timeout: 10000
+    timeout: 10000,
+    headers: {'authorization': token}
 });
 
 api.interceptors.response.use(function (response) {
