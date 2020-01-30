@@ -32,6 +32,7 @@ export default function SimpleCard(props) {
         let response = await api.delete(`articles/${props.data._id}`);
         if (response.status === 200, response.data.ok === 1){
           console.log('DELETED');
+          props.update();
         }
     }
     catch (error) {
